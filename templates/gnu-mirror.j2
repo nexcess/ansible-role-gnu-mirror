@@ -1,0 +1,30 @@
+#!/bin/bash
+# http://www.gnu.org/server/mirror.html
+
+SOURCE='{{ gnu_mirror_source }}'
+DESTINATION='{{ mirror_doc_root }}/gnu/'
+
+LOCKFILE=/tmp/$(basename ${DESTINATION}).lock
+
+
+if [[ ! -e $LOCKFILE ]]; then
+    touch $LOCKFILE
+    rsync -rvltpHS           \
+          --human-readable   \
+          --progress         \
+          --safe-links       \
+          --delete-after     \
+          --delay-updates    \
+          --delete-excluded  \
+          --exclude '.~tmp~' \
+          --itemize-changes  \
+          ${SOURCE} ${DESTINATION}
+    rm $LOCKFILE
+else
+    cat <<EOF 1>&2
+ERROR: Another rsync is already running and has the lock file
+$LOCKFILE.
+
+EOF
+
+fi

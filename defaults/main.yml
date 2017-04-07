@@ -1,0 +1,4 @@
+---
+
+gnu_mirror_source: "ftp.gnu.org::gnu/"
+gnu_mirror_cron_disabled: true

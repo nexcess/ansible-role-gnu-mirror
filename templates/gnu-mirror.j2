@@ -9,16 +9,16 @@ LOCKFILE=/tmp/$(basename ${DESTINATION}).lock
 
 if [[ ! -e $LOCKFILE ]]; then
     touch $LOCKFILE
-    rsync -rvltpHS           \
-          --human-readable   \
-          --progress         \
-          --safe-links       \
-          --delete-after     \
-          --delay-updates    \
-          --delete-excluded  \
-          --exclude '.~tmp~' \
-          --itemize-changes  \
-          --timeout=10800    \
+    timeout 1d rsync -rvltpHS \
+          --human-readable    \
+          --progress          \
+          --safe-links        \
+          --delete-after      \
+          --delay-updates     \
+          --delete-excluded   \
+          --exclude '.~tmp~'  \
+          --itemize-changes   \
+          --timeout=10800     \
           ${SOURCE} ${DESTINATION}
 
     if [[ $? -eq 0 ]]; then
